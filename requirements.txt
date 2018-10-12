@@ -1,2 +1,4 @@
 flask
 pixivpy==3.3.5
+gunicorn==19.6.0
+Flask-Migrate==2.0.3
