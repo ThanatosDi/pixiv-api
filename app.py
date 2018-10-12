@@ -88,7 +88,7 @@ class api:
 #get / response 
 @app.route(f"/{api.version}")
 def hello():
-    return jsonify({'response':{'status':200,'message':'Welcome to Pixiv API website.'}})
+    return jsonify({'response':{'status':200,'message':'Welcome to Pixiv RESTful API website.',}})
 
 #get /illust/detail data:{illust id:id,}
 @app.route(f'/{api.version}/illust/detail/<string:id>')
@@ -115,8 +115,6 @@ def illust_search():
 
 @app.errorhandler(404)
 def Page_Not_Found(e):
-    if e is None:
-        return http.status({'status_codde':404,'message':'404 not found'} , 404)
     return http.status({'status_codde':404,'message':str(e)} , 404)
 
 @app.errorhandler(500)
