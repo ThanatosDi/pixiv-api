@@ -17,6 +17,7 @@ class mod:
         for key in value.keys():
             dictionary[root][key] = value[key]
         return dictionary
+    
 class http:
     @staticmethod
     def status(message,status_code):
@@ -80,6 +81,27 @@ class PIXIV():
         except Exception as e:
             return Interal_Server_Error(str(e))
 
+    def illustRanking(self,mode=None, offset=None):
+        try:
+            ranking = self.api.illust_ranking(mode=mode,offset=offset)
+            return http.status(ranking, 200)
+        except Exception as e:
+            return Interal_Server_Error(str(e))
+
+    
+
+class PIXIVR18:
+    def __init__(self):
+        self.apiR18 = AppPixivAPI()
+        self.apiR18.auth(config.PixivR18['username'],config.PixivR18['password'],'_yAMBLPxLYQtVAK9BNn_6FSOPPnCzPjA-822ZA_OIlk')
+    
+    def illustR18Ranking(self,mode=None, offset=None):
+        try:
+            ranking = self.apiR18.illust_ranking(mode=f'{mode}_r18',offset=offset)
+            return http.status(ranking, 200)
+        except Exception as e:
+            return Interal_Server_Error(str(e))
+
 app = Flask(__name__)
 
 class api:
@@ -91,13 +113,13 @@ def hello():
     return jsonify({'response':{'status':200,'message':'Welcome to Pixiv RESTful API website.',}})
 
 #get /illust/detail data:{illust id:id,}
-@app.route(f'/{api.version}/illust/detail/<string:id>')
+@app.route(f'/{api.version}/illust/detail/<int:id>')
 def illust_detail(id):
     pixiv = PIXIV()
     return pixiv.illustDetail(id)
 
 #get /illust/list data:{user id:id,}
-@app.route(f'/{api.version}/illust/list/<string:id>')
+@app.route(f'/{api.version}/illust/list/<int:id>')
 def illust_list(id):
     pixiv = PIXIV()
     return pixiv.illustList(id)
@@ -112,6 +134,50 @@ def illust_search():
     pixiv = PIXIV()
     return pixiv.illustSearch(word,offset)
 
+#get /illust/rank data:{mode:day, week, month, day_male, day_female, week_original, week_rookie, day_manga}
+"""
+@app.route(f'/{api.version}/rank')
+def illust_ranking():
+    offset = None
+    mode = None
+    mode = request.args.get('mode')
+    if request.args.get('offset'):
+        offset = request.args.get('offset')
+    if mode is None:
+        return http.status({ }, 200)
+    pixiv = PIXIV()
+    return pixiv.illustRanking(mode, offset)
+"""
+@app.route(f'/{api.version}/rank/', defaults={'timeinterval': None})
+@app.route(f'/{api.version}/rank/<string:timeinterval>/')
+@app.route(f'/{api.version}/rank/<string:timeinterval>/', defaults={'mode': None})
+@app.route(f'/{api.version}/rank/<string:timeinterval>/<string:mode>')
+def illust_ranking(timeinterval,mode):
+    pixiv = PIXIV()
+    offset = None
+    timeintervallist = ('day', 'week', 'month')
+    daymode = ('male', 'female')
+    if timeinterval is None or timeinterval not in timeintervallist:
+        return Page_Not_Found('time interval error')
+    if timeinterval is 'day' and mode in daymode:
+        print(timeinterval+'_'+mode)
+        return pixiv.illustRanking(timeinterval+'_'+mode, offset)
+    return pixiv.illustRanking(timeinterval, offset) 
+
+    
+
+#get /illust/rank data:{mode:day, day_male, day_female, week}
+@app.route(f'/{api.version}/r18rank')
+def illust_r18ranking():
+    offset = None
+    mode = None
+    mode = request.args.get('mode')
+    if request.args.get('offset'):
+        offset = request.args.get('offset')
+    if mode is None:
+        return http.status({ }, 200)
+    pixiv = PIXIVR18()
+    return pixiv.illustR18Ranking(mode, offset)
 
 @app.errorhandler(404)
 def Page_Not_Found(e):
@@ -122,6 +188,8 @@ def Interal_Server_Error(e):
     if e is None:
         return http.status({'status_codde':500,'message':'500 Interal Server Error'} , 500)
     return http.status({'status_codde':500,'message':str(e)} , 500)
+
+
 
 if __name__ == "__main__":
     app.run()
