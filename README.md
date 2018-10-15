@@ -1,7 +1,7 @@
 # pixiv-api
 
 Pixiv RESTful API
-
+https://pixiv-api.herokuapp.com/v1
 # 使用
 - ## GET /v1
    首頁
