@@ -2,7 +2,6 @@
   "name": "Heroku Pixiv RESTful API",
   "logo": "",
   "repository": "https://github.com/Kutinging/pixiv-api",
-  "addons": [],
   "env": {
     "WEBHOOK_SECRET": {
       "Pixiv_password": "",
