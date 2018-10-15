@@ -116,8 +116,8 @@ class api:
 
 #GET / response 
 @app.route(f"/{api.version}")
-def hello():
-    return jsonify({'response':{'status':200,'message':'Welcome to Pixiv RESTful API website.',}})
+def home():
+    return jsonify({'response':{'status':200,'message':'Welcome to Pixiv RESTful API website.','version':'1.0'}})
 
 #GET /illust/detail data:{illust id:id,}
 @app.route(f'/{api.version}/illust/detail/<int:id>')
