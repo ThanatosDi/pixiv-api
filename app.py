@@ -39,7 +39,7 @@ class PIXIV():
 
     def __init__(self):
         self.api = AppPixivAPI()
-        if config.Pixiv['refresh_token']=='':
+        if config.Pixiv['refresh_token']==None:
             self.api.login(config.Pixiv['username'],config.Pixiv['password'])
         else:
             self.api.auth(config.Pixiv['username'],config.Pixiv['password'],config.Pixiv['refresh_token'])
