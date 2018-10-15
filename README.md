@@ -2,8 +2,6 @@
 
 Pixiv RESTful API
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Kutinging/pixiv-api)
-
 # 使用
 - ## GET /v1
    首頁
