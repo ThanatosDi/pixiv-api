@@ -45,3 +45,5 @@ Pixiv RESTful API
   |----------      |:-------------: |:-:|:------: |-------:        |
   | day            | 每日排行        |male|20181014 |2018-10-14 R18 受男性歡迎排行|
   |                |                |female|20181014|2018-10-14 R18 受女性歡迎排行|
+# 第三方庫
+[pixivpy](https://github.com/upbit/pixivpy) by upbit
