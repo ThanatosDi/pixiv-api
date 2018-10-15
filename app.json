@@ -1,14 +1,18 @@
 {
   "name": "Heroku Pixiv RESTful API",
-  "logo": "",
   "repository": "https://github.com/Kutinging/pixiv-api",
   "env": {
-    "WEBHOOK_SECRET": {
-      "Pixiv_password": "",
-      "Pixiv_refresh_token": "",
-      "Pixiv_username":""
+    "Pixiv_username": {
+      "description": "Your pixiv email",
+      "value": ""
+    },
+    "Pixiv_password": {
+      "description": "Your pixiv password",
+      "value": ""
+    },    
+   "Pixiv_refresh_token": {
+      "description": "Use postman or print login json to get refresh_token",
+      "value": ""
     }
-  },
-  "scripts": {
   }
 }
