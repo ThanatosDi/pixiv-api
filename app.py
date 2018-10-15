@@ -1,6 +1,7 @@
 from flask import Flask,jsonify,request,make_response
 import json
 import requests
+import os
 from pixivpy3 import *
 from config import *
 from exception import *
@@ -38,7 +39,10 @@ class PIXIV():
 
     def __init__(self):
         self.api = AppPixivAPI()
-        self.api.auth(config.Pixiv['username'],config.Pixiv['password'],'iw87X9CfgFhXDwV0Wgt5c0AhCgNqpaINJe5Fd5nbttk')
+        if config.Pixiv['refresh_token']=='':
+            self.api.login(config.Pixiv['username'],config.Pixiv['password'])
+        else:
+            self.api.auth(config.Pixiv['username'],config.Pixiv['password'],config.Pixiv['refresh_token'])
     
     def illustDetail(self,illustid):
         """
@@ -86,15 +90,25 @@ class PIXIV():
 
     def illustRanking(self,mode=None, offset=None, date=None):
         try:
-            if not date==None:
+            if date:
                 date = (mod.datetransfer(date))
+            print(date)
             ranking = self.api.illust_ranking(mode=mode,offset=offset,date=date)
             return http.status(ranking, 200)
         except Exception as e:
             return Interal_Server_Error(str(e))
 
-    
+    def illustR18Ranking(self,mode=None, offset=None, date=None):
+        try:
+            if not date==None:
+                date = (mod.datetransfer(date))
+            ranking = self.api.illust_ranking(mode=f'{mode}_r18',offset=offset,date=date)
+            return http.status(ranking, 200)
+        except Exception as e:
+            return Interal_Server_Error(str(e))
 
+    
+"""
 class PIXIVR18:
     def __init__(self):
         self.apiR18 = AppPixivAPI()
@@ -108,7 +122,7 @@ class PIXIVR18:
             return http.status(ranking, 200)
         except Exception as e:
             return Interal_Server_Error(str(e))
-
+"""
 app = Flask(__name__)
 
 class api:
@@ -154,7 +168,7 @@ def illust_ranking(timeinterval,mode=None):
     if request.args.get('offset') :
         offset = request.args.get('offset')
     if request.args.get('date') :
-        offset = request.args.get('date')
+        date = request.args.get('date')
     timeintervallist = ('day', 'week', 'month')
     daymode = ('male', 'female','manga')
     weekmode = ('original','rookie')
@@ -173,13 +187,13 @@ def illust_ranking(timeinterval,mode=None):
 @app.route(f'/{api.version}/r18rank/<string:timeinterval>', defaults={'mode': None})
 @app.route(f'/{api.version}/r18rank/<string:timeinterval>/<string:mode>')
 def illust_r18ranking(timeinterval,mode=None):
-    pixiv = PIXIVR18()
+    pixiv = PIXIV()
     offset = None
     date = None
     if request.args.get('offset') :
         offset = request.args.get('offset')
     if request.args.get('date') :
-        offset = request.args.get('date')
+        date = request.args.get('date')
     timeintervallist = ('day', 'week')
     daymode = ('male', 'female')
     if timeinterval=='day' and mode in daymode:
