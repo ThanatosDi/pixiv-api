@@ -12,7 +12,8 @@
     },    
    "Pixiv_refresh_token": {
       "description": "Use postman or print login json to get refresh_token",
-      "value": ""
+      "value": "",
+      "required": false
     }
   }
 }
