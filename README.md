@@ -2,9 +2,9 @@
 Pixiv RESTful API  
 https://pixiv-api.herokuapp.com/v1
 # 安裝
-`git clone https://github.com/Kutinging/pixiv-api --branch=master`
-建議使用 virtualenv 並使用 env 環境執行
-`python -m pip install -r requirements.txt`
+`git clone https://github.com/Kutinging/pixiv-api --branch=master`  
+建議使用 virtualenv 並使用 env 環境執行  
+`python -m pip install -r requirements.txt`  
 
 # 使用
 - ## GET /v1
