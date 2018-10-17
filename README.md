@@ -7,8 +7,10 @@ Pixiv RESTful API
 # 使用
 - ## GET /v1
    首頁
+- ## GET /v1/hottag
+   取得 熱門作品(下稱:illsut) 的詳細內容
 - ## GET /v1/illust/detail/{illust id}
-   取得 作品(下稱:illsut) id 的詳細內容
+   取得 illsut id 的詳細內容
 - ## GET /v1/illust/list/{user id}
    取得 使用者(下稱:user)的 illsut 列表
 - ## GET /v1/illust/search?keyword={keyword}&offset={offset}
