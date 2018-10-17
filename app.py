@@ -107,22 +107,13 @@ class PIXIV():
         except Exception as e:
             return Interal_Server_Error(str(e))
 
-    
-"""
-class PIXIVR18:
-    def __init__(self):
-        self.apiR18 = AppPixivAPI()
-        self.apiR18.auth(config.PixivR18['username'],config.PixivR18['password'],'_yAMBLPxLYQtVAK9BNn_6FSOPPnCzPjA-822ZA_OIlk')
-    
-    def illustR18Ranking(self,mode=None, offset=None, date=None):
+    def hottag(self):
         try:
-            if not date==None:
-                date = (mod.datetransfer(date))
-            ranking = self.apiR18.illust_ranking(mode=f'{mode}_r18',offset=offset,date=date)
-            return http.status(ranking, 200)
+            tag = self.api.trending_tags_illust()
+            return http.status(tag, 200)
         except Exception as e:
             return Interal_Server_Error(str(e))
-"""
+
 app = Flask(__name__)
 
 class api:
@@ -201,6 +192,11 @@ def illust_r18ranking(timeinterval,mode=None):
     if not timeinterval==None and mode==None and timeinterval in timeintervallist:
         return pixiv.illustR18Ranking(timeinterval, offset, date) 
     return Page_Not_Found('404 not found')
+
+@app.route(f'/{api.version}/hottag')
+def hot_tag():
+    pixiv = PIXIV()
+    return pixiv.hottag()
 
 @app.errorhandler(404)
 def Page_Not_Found(e):
