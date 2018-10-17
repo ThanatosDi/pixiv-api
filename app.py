@@ -107,6 +107,13 @@ class PIXIV():
         except Exception as e:
             return Interal_Server_Error(str(e))
 
+    def hottag(self):
+        try:
+            tag = self.api.trending_tags_illust()
+            return http.status(tag, 200)
+        except Exception as e:
+            return Interal_Server_Error(str(e))
+
     
 """
 class PIXIVR18:
@@ -201,6 +208,11 @@ def illust_r18ranking(timeinterval,mode=None):
     if not timeinterval==None and mode==None and timeinterval in timeintervallist:
         return pixiv.illustR18Ranking(timeinterval, offset, date) 
     return Page_Not_Found('404 not found')
+
+@app.route(f'/{api.version}/hottag')
+def hot_tag():
+    pixiv = PIXIV()
+    return pixiv.hottag()
 
 @app.errorhandler(404)
 def Page_Not_Found(e):
