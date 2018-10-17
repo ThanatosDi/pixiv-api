@@ -114,22 +114,6 @@ class PIXIV():
         except Exception as e:
             return Interal_Server_Error(str(e))
 
-    
-"""
-class PIXIVR18:
-    def __init__(self):
-        self.apiR18 = AppPixivAPI()
-        self.apiR18.auth(config.PixivR18['username'],config.PixivR18['password'],'_yAMBLPxLYQtVAK9BNn_6FSOPPnCzPjA-822ZA_OIlk')
-    
-    def illustR18Ranking(self,mode=None, offset=None, date=None):
-        try:
-            if not date==None:
-                date = (mod.datetransfer(date))
-            ranking = self.apiR18.illust_ranking(mode=f'{mode}_r18',offset=offset,date=date)
-            return http.status(ranking, 200)
-        except Exception as e:
-            return Interal_Server_Error(str(e))
-"""
 app = Flask(__name__)
 
 class api:
